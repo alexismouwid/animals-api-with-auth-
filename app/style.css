@@ -1,0 +1,65 @@
+/* Reinicio de márgenes, rellenos y ajuste del modelo de caja */
+* {
+  margin: 0; /* Elimina el margen predeterminado */
+  padding: 0; /* Elimina el relleno predeterminado */
+  box-sizing: border-box; /* Incluye el borde y el relleno en el cálculo del tamaño de los elementos */
+}
+
+/* Estilos para el cuerpo y el documento HTML */
+body, html {
+  height: 100%; /* Asegura que el contenido ocupe todo el alto de la pantalla */
+  display: flex; /* Utiliza flexbox para organizar los elementos */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  align-items: center; /* Centra los elementos verticalmente */
+  background-color: #000000; /* Fondo negro */
+  font-family: Arial, sans-serif; /* Fuente sans-serif */
+}
+
+/* Estilos para el contenedor principal */
+#container {
+  background-color: #3175b0; /* Fondo azul */
+  padding: 20px; /* Espaciado interno */
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0 0 10px
+    rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del contenedor */
+  text-align: center; /* Centra el texto dentro del contenedor */
+  width: 300px; /* Establece un ancho fijo para el contenedor */
+}
+
+/* Estilos para cada div dentro del formulario */
+form div {
+  margin-bottom: 10px; /* Espaciado inferior entre los elementos */
+  display: flex; /* Utiliza flexbox para alinear los elementos */
+  flex-direction: column; /* Organiza los elementos en una columna */
+  text-align: left; /* Alinea el texto a la izquierda */
+}
+
+/* Estilos para los campos de entrada (inputs) */
+input {
+  padding: 5px; /* Relleno interno para el campo */
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 5px; /* Bordes redondeados */
+  outline: none; /* Elimina el contorno cuando se selecciona */
+}
+
+/* Estilos para los botones */
+button {
+  padding: 10px; /* Relleno interno para el botón */
+  border: none; /* Sin borde */
+  background-color: #007bff; /* Fondo azul para el botón */
+  color: white; /* Texto blanco */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor a mano al pasar por encima */
+  width: 35%; /* Ancho del botón */
+  margin-top: 10px; /* Espaciado superior entre el botón y otros elementos */
+}
+
+/* Efecto visual al pasar el cursor por encima del botón */
+button:hover {
+  background-color: #0056b3; /* Cambia el fondo del botón a un azul más oscuro */
+}
+
+/* Elimina el estilo predeterminado de las listas */
+li {
+  list-style-type: none; /* Elimina los puntos o números predeterminados de las listas */
+}

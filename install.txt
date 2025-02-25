@@ -1,0 +1,14 @@
+comandos para inicializar proyecto
+
+EXPRESS 
+
+npm init -y
+
+conf package json
+
+npm install -S express
+
+MONGOOSE
+
+npm i -S mongoose
+
