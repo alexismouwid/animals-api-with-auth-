@@ -1,7 +1,7 @@
 const loadInitialTemplate = () => {
   const template = `
 <div id="container">
- <h1>Login</h1>
+ <h1>Animales</h1>
  <form id="animal-form"> 
     <div> 
       <label>Nombre</label>
@@ -9,7 +9,7 @@ const loadInitialTemplate = () => {
     </div>
     <div> 
          <label>Tipo</label>
-         <input name="tipo" />
+         <input name="type" />
      </div>
      <button type="submit">Enviar</button>
 </form>
@@ -22,11 +22,15 @@ const loadInitialTemplate = () => {
 };
 
 const getAnimals = async () => {
-  const response = await fetch("/animals");
+  const response = await fetch("/animals", {
+    headers: {
+      Authorization: localStorage.getItem("jwt"),
+    },
+  });
   const animals = await response.json();
   const template = (animal) => `
    <li> 
- ${animal.name} ${animal.lastname} <button data-id="${animal._id}">Eliminar</button>
+ ${animal.name} ${animal.type} <button data-id="${animal._id}">Eliminar</button>
 </li>
 `;
 
@@ -36,7 +40,12 @@ const getAnimals = async () => {
   animals.forEach((animal) => {
     const animalNode = document.querySelector(`[data-id="${animal._id}"]`);
     animalNode.onclick = async (e) => {
-      await fetch(`/animals/${animal._id}`, { method: "DELETE" });
+      await fetch(`/animals/${animal._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: localStorage.getItem("jwt"),
+        },
+      });
       animalNode.parentNode.remove();
       console.log("Eliminado con éxito");
     };
@@ -54,9 +63,10 @@ const addFormListener = () => {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwt"),
       },
     });
-    console.log("Usuario creado con éxito: " + JSON.stringify(data));
+    console.log("Animal creado con éxito: " + JSON.stringify(data));
     animalForm.reset();
     getAnimals();
   };
@@ -93,7 +103,30 @@ const loadRegisterTemplate = () => {
   const body = document.getElementsByTagName("body")[0];
   body.innerHTML = template;
 };
-const addRegisterListener = () => {};
+const addRegisterListener = () => {
+  const registerForm = document.getElementById("register-form");
+  registerForm.onsubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const data = Object.fromEntries(formData.entries());
+
+    const response = await fetch("/register", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseData = await response.text();
+    if (response.status >= 300) {
+      const errorNode = document.getElementById("error");
+      errorNode.innerHTML = responseData;
+    } else {
+      localStorage.setItem("jwt", `Bearer ${responseData}`);
+      animalsPage();
+    }
+  };
+};
 const gotoLoginListener = () => {};
 
 const registerPage = () => {
@@ -157,7 +190,8 @@ const addLoginListener = () => {
       const errorNode = document.getElementById("error");
       errorNode.innerHTML = responseData;
     } else {
-      console.log(responseData);
+      localStorage.setItem("jwt", `Bearer ${responseData}`);
+      animalsPage();
     }
   };
 };
