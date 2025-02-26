@@ -97,37 +97,21 @@ const loadRegisterTemplate = () => {
      <button type="submit">Enviar</button>
 </form>
 <a href='#' id='login'>Iniciar sesión</a>
-</div>
-`;
+    <div id="error"></div>
+    </div>
+    `;
 
   const body = document.getElementsByTagName("body")[0];
   body.innerHTML = template;
 };
-const addRegisterListener = () => {
-  const registerForm = document.getElementById("register-form");
-  registerForm.onsubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(registerForm);
-    const data = Object.fromEntries(formData.entries());
 
-    const response = await fetch("/register", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseData = await response.text();
-    if (response.status >= 300) {
-      const errorNode = document.getElementById("error");
-      errorNode.innerHTML = responseData;
-    } else {
-      localStorage.setItem("jwt", `Bearer ${responseData}`);
-      animalsPage();
-    }
+const gotoLoginListener = () => {
+  const gotoLogin = document.getElementById("login");
+  gotoLogin.onclick = (e) => {
+    e.preventDefault();
+    loginPage();
   };
 };
-const gotoLoginListener = () => {};
 
 const registerPage = () => {
   console.log("pagina de registro");
@@ -157,6 +141,7 @@ const loadLoginTemplate = () => {
      <button type="submit">Enviar</button>
 </form>
 <a href='#' id='register'>Registrarse</a>
+<div id="error"></div>
 </div>
 `;
 
@@ -171,14 +156,15 @@ const gotoRegisterListener = () => {
     registerPage();
   };
 };
-const addLoginListener = () => {
-  const loginForm = document.getElementById("login-form");
-  loginForm.onsubmit = async (e) => {
+
+const authListener = (action) => () => {
+  const form = document.getElementById(`${action}-form`);
+  form.onsubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(loginForm);
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    const response = await fetch("/login", {
+    const response = await fetch(`/${action}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -191,10 +177,13 @@ const addLoginListener = () => {
       errorNode.innerHTML = responseData;
     } else {
       localStorage.setItem("jwt", `Bearer ${responseData}`);
+      console.log(`${action} - Usuario: ${data.email}`);
       animalsPage();
     }
   };
 };
+const addLoginListener = authListener("login");
+const addRegisterListener = authListener("register");
 
 window.onload = () => {
   const isLoggedIn = checkLogin();

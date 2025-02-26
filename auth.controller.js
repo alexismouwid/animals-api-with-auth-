@@ -52,7 +52,7 @@ const Auth = {
     try {
       const isUser = await User.findOne({ email: body.email });
       if (isUser) {
-        res.send("usuario ya existe");
+        return res.status(409).json({ message: "El usuario ya existe" });
       } else {
         const salt = await bcrypt.genSalt();
         const hashed = await bcrypt.hash(body.password, salt);
